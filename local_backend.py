@@ -10,11 +10,10 @@ CORS(app)
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-@app.route("/openai", methods=["POST", "OPTIONS"])
+@app.route("/")
 def index():
-    return 'Backend is running.'
+    return "Backend is running."
 
-from flask import request, jsonify, make_response
 
 @app.route("/openai", methods=["POST", "OPTIONS"])
 def openai_route():
@@ -25,13 +24,9 @@ def openai_route():
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         return response, 200
 
-    # Real POST logic
     data = request.get_json()
     prompt = data.get("prompt", "")
-    
-    # Example response — replace with actual OpenAI logic
     return jsonify({"response": f"You sent: {prompt}"})
-
 
     try:
         response = client.chat.completions.create(
