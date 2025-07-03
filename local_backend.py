@@ -7,7 +7,7 @@ from flask import make_response
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -15,15 +15,8 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def index():
     return "Backend is running."
 
-@app.route("/openai", methods=["POST", "OPTIONS"])
+@app.route("/openai", methods=["POST"])
 def openai_route():
-    if request.method == "OPTIONS":
-        response = make_response()
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-        response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
-        return response, 200
-
     data = request.get_json()
     prompt = data.get("prompt", "")
 
@@ -36,6 +29,7 @@ def openai_route():
         )
         answer = response.choices[0].message.content.strip()
         return jsonify({"response": answer})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
