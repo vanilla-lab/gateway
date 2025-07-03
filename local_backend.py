@@ -10,7 +10,7 @@ CORS(app)
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-@app.route('/')
+@app.route("/openai", methods=["POST", "OPTIONS"])
 def index():
     return 'Backend is running.'
 
