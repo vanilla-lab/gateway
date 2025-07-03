@@ -19,7 +19,10 @@ def openai_route():
     prompt = data.get("prompt", "")
 
     try:
-        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        key = os.getenv("OPENAI_API_KEY")
+        print("Key loaded?", bool(key), "Length:", len(key) if key else "None")
+
+        client = openai.OpenAI(api_key=key)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
@@ -30,7 +33,9 @@ def openai_route():
         return jsonify({"response": answer})
 
     except Exception as e:
+        print("ERROR:", str(e))  # <-- force the error into Render logs
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
