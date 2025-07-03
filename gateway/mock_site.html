@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Model Comparison</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #1e1e1e;
+      color: #ddd;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.light-mode {
+      background-color: #f7f7f7;
+      color: #000;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      background: linear-gradient(180deg, #4f46e5, #9333ea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    .input-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .input-section input {
+      width: 60%;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .input-section button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #444;
+      color: white;
+      border: 1px solid #888;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .input-section button:hover {
+      background-color: #555;
+    }
+
+    body.light-mode .input-section button {
+      background-color: #eee;
+      color: #000;
+      border: 1px solid #ccc;
+    }
+
+    body.light-mode .input-section button:hover {
+      background-color: #ddd;
+    }
+
+    .theme-icon {
+      height: 1.2em;
+      width: 1.2em;
+      vertical-align: middle;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .model-response {
+      background: #2c2c2c;
+      color: #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(255,255,255,0.05);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.light-mode .model-response {
+      background: white;
+      color: #000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .placeholder-text {
+      color: #ffffff;
+    }
+
+    body.light-mode .placeholder-text {
+      color: #888;
+    }
+
+    .model-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chatgpt-logo {
+      height: 2.25em;
+    }
+
+    .dark-mode-logo {
+      display: inline;
+    }
+
+    .light-mode .dark-mode-logo {
+      display: none;
+    }
+
+    .light-mode-logo {
+      display: none;
+    }
+
+    .light-mode .light-mode-logo {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gateway</h1>
+
+  <div class="input-section">
+    <input type="text" id="prompt" placeholder="Enter your prompt here..." />
+    <button onclick="submitPrompt()">Submit</button>
+    <button id="theme-toggle" onclick="toggleDarkMode()">
+      <span>Toggle Darkness</span>
+      <img src="assets/dark-mode.png" alt="Theme Icon" id="theme-icon" class="theme-icon" />
+    </button>
+  </div>
+
+  <div class="results">
+    <div class="model-response">
+      <div class="model-header">
+        <h2>ChatGPT</h2>
+        <img
+          src="assets/OpenAI-white-monoblossom.png"
+          alt="ChatGPT Logo"
+          class="chatgpt-logo dark-mode-logo"
+        />
+        <img
+          src="assets/OpenAI-black-monoblossom.png"
+          alt="ChatGPT Logo"
+          class="chatgpt-logo light-mode-logo"
+        />
+      </div>
+      <p class="placeholder-text">Response will appear here.</p>
+    </div>
+
+    <div class="model-response">
+      <h2>Claude</h2>
+      <p class="placeholder-text">Response will appear here.</p>
+    </div>
+
+    <div class="model-response">
+      <h2>Gemini</h2>
+      <p class="placeholder-text">Response will appear here.</p>
+    </div>
+  </div>
+
+  <script>
+    async function submitPrompt() {
+      const prompt = document.getElementById("prompt").value;
+      const chatBox = document.querySelector(".model-response:nth-child(1) p");
+      chatBox.textContent = "Loading...";
+
+      try {
+        const res = await fetch("http://localhost:5000/openai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ prompt })
+        });
+
+        const data = await res.json();
+        if (data.response) {
+          chatBox.textContent = data.response;
+        } else {
+          chatBox.textContent = "Error: " + (data.error || "Unknown error");
+        }
+      } catch (err) {
+        chatBox.textContent = "Fetch error: " + err.message;
+      }
+    }
+
+    function toggleDarkMode() {
+      const body = document.body;
+      const icon = document.getElementById("theme-icon");
+
+      body.classList.toggle('light-mode');
+
+      const isLight = body.classList.contains('light-mode');
+      icon.src = isLight ? "assets/light-mode.png" : "assets/dark-mode.png";
+      icon.alt = isLight ? "Light Mode" : "Dark Mode";
+    }
+
+    // Submit on Enter key
+    document.getElementById("prompt").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        submitPrompt();
+      }
+    });
+  </script>
+</body>
+</html>
