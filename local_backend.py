@@ -9,8 +9,6 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 @app.route("/")
 def index():
     return "Backend is running."
@@ -21,6 +19,7 @@ def openai_route():
     prompt = data.get("prompt", "")
 
     try:
+        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
