@@ -3,6 +3,7 @@ import os
 from flask_cors import CORS
 from dotenv import load_dotenv
 import openai
+from flask import make_response
 
 load_dotenv()
 app = Flask(__name__)
@@ -13,7 +14,6 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 @app.route("/")
 def index():
     return "Backend is running."
-
 
 @app.route("/openai", methods=["POST", "OPTIONS"])
 def openai_route():
@@ -26,7 +26,6 @@ def openai_route():
 
     data = request.get_json()
     prompt = data.get("prompt", "")
-    return jsonify({"response": f"You sent: {prompt}"})
 
     try:
         response = client.chat.completions.create(
