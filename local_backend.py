@@ -20,8 +20,6 @@ def openai_route():
     data = request.get_json()
     prompt = data.get("prompt", "")
 
-    print("Using API key:", os.getenv("OPENAI_API_KEY"))
-
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
