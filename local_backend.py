@@ -4,6 +4,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import openai
 from flask import make_response
+import google.generativeai as genai
 
 load_dotenv()
 app = Flask(__name__)
@@ -34,6 +35,27 @@ def openai_route():
     except Exception as e:
         print("ERROR:", str(e))
         return jsonify({"error": str(e)}), 500
+
+@app.route("/gemini", methods=["POST"])
+def gemini_route():
+    data = request.get_json()
+    prompt = data.get("prompt", "")
+
+    try:
+        key = os.getenv("GEMINI_API_KEY")
+        print("Gemini key loaded?", bool(key), "Length:", len(key) if key else "None")
+
+        genai.configure(api_key=key)
+
+        model = genai.GenerativeModel("gemini-pro")
+        response = model.generate_content(prompt)
+        answer = response.text.strip()
+
+        return jsonify({"response": answer})
+    except Exception as e:
+        print("Gemini ERROR:", str(e))
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
