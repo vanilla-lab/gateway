@@ -49,7 +49,7 @@ def gemini_route():
         genai.configure(api_key=key)
         print("AVAILABLE MODELS:", [m.name for m in genai.list_models()])
 
-        model = genai.GenerativeModel("models/gemini-1.5-pro")
+        model = genai.GenerativeModel("models/gemini-2.0-flash")
         response = model.generate_content(prompt)
         answer = response.text.strip()
 
