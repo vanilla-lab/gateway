@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import openai
 from flask import make_response
 import google.generativeai as genai
+print("GENAI VERSION:", google.generativeai.__version__)
 
 load_dotenv()
 app = Flask(__name__)
@@ -55,7 +56,6 @@ def gemini_route():
     except Exception as e:
         print("Gemini ERROR:", str(e))
         return jsonify({"error": str(e)}), 500
-
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
