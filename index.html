@@ -131,14 +131,31 @@
     .light-mode .light-mode-logo {
       display: inline;
     }
+
+    .model-info {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+    body.light-mode .model-info {
+      color: #555;
+    }
+
   </style>
 </head>
 <body>
+  
   <h1 style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
   <img src="assets/logo.png" alt="Gateway Logo" style="height: 2.5rem;" />
   Gateway
 </h1>
 
+  <div class="model-info">
+    ChatGPT: gpt-3.5-turbo &nbsp; | &nbsp; Gemini: gemini-2.0-flash
+  </div>
+  
   <div class="input-section">
     <input type="text" id="prompt" placeholder="Enter your prompt here..." />
     <button onclick="submitPrompt()">Submit</button>
