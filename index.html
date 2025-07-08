@@ -133,14 +133,19 @@
     }
 
     .model-info {
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-      font-size: 0.8rem;
+      position: fixed;
+      bottom: 0.5rem;
+      left: 0.5rem;
+      font-size: 0.75rem;
       color: #aaa;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      z-index: 1000;
     }
     body.light-mode .model-info {
       color: #555;
+      background-color: rgba(255, 255, 255, 0.7);
     }
 
   </style>
