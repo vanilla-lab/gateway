@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import openai
 from flask import make_response
 import google.generativeai as genai
-print("GENAI VERSION:", google.generativeai.__version__)
+print("GENAI VERSION:", genai.__version__)
 
 load_dotenv()
 app = Flask(__name__)
