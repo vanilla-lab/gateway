@@ -47,6 +47,7 @@ def gemini_route():
         print("Gemini key loaded?", bool(key), "Length:", len(key) if key else "None")
 
         genai.configure(api_key=key)
+        print("AVAILABLE MODELS:", [m.name for m in genai.list_models()])
 
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt)
