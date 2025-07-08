@@ -192,7 +192,7 @@
 
       // OpenAI
       try {
-        const resOpenAI = await fetch("http://localhost:5000/openai", {
+        const resOpenAI = await fetch("https://gateway-ious.onrender.com/openai", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -207,7 +207,7 @@
 
       // Gemini
       try {
-        const resGemini = await fetch("http://localhost:5000/gemini", {
+        const resGemini = await fetch("https://gateway-ious.onrender.com/gemini", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
