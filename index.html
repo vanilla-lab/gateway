@@ -204,14 +204,7 @@
 
   <script>
     
-       document.addEventListener("DOMContentLoaded", function () {
-      document.getElementById("prompt").addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          submitPrompt();
-        }
-      });
-    });
+    // Client-side logic for interacting with the backend
     
     async function submitPrompt() {
       const prompt = document.getElementById("prompt").value;
@@ -263,6 +256,7 @@
       icon.alt = isLight ? "Light Mode" : "Dark Mode";
     }
 
+    // Listen for the Enter key once on the input field
     document.getElementById("prompt").addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
         event.preventDefault();
